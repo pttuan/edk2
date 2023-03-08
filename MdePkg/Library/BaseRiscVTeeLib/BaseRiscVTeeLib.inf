@@ -1,0 +1,29 @@
+## @file
+#  RISC-V Tee Library Instance.
+#
+#  Copyright (c) 2023, Ventana Micro Systems Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION    = 0x0001001b
+  BASE_NAME      = BaseRiscVTeeLib
+  FILE_GUID      = ba9a061d-b8af-44e9-8392-a59daefddd21
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = BaseRiscVTeeLib
+  CONSTRUCTOR    = BaseRiscVTeeLibConstructor
+
+[Sources]
+  BaseRiscVTeeLib.c
+  BaseRiscVTeeLibHost.c
+  BaseRiscVTeeLibGuest.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
