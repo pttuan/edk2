@@ -1,0 +1,63 @@
+## @file
+#  RISC-V TEE module.
+#
+#  Copyright (c) 2023, Ventana Micro Systems Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = RiscVTeeDxe
+  FILE_GUID                      = 89ca7b74-803b-41fc-9f87-5c0aac091271
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = RiscVTeeDxeInitialize
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  IoLib
+  CpuLib
+  CacheMaintenanceLib
+  DebugLib
+  DxeServicesTableLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  CpuExceptionHandlerLib
+  RiscVSbiLib
+  RiscVTeeLib
+
+[Sources]
+  RiscVTeeDxe.c
+  RiscVTeeHyp.s
+  RiscVTeeMmComm.c
+  RiscVTeeMmInit.c
+
+[Protocols]
+  gEfiCpuArchProtocolGuid                       ## CONSUMES
+  gEfiTimerArchProtocolGuid                     ## CONSUMES
+  gEfiMmCommunication2ProtocolGuid              ## PRODUCES
+
+[Guids]
+  gEfiEndOfDxeEventGroupGuid
+  gEfiEventExitBootServicesGuid
+  gEfiEventReadyToBootGuid
+
+[Pcd]
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvBase
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvSize
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmMemSize
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFdBase
+
+[Depex]
+  gEfiCpuArchProtocolGuid
