@@ -21,3 +21,11 @@
 ASM_FUNC (RiscVReadTimer)
     csrr a0, CSR_TIME
     ret
+
+//
+// Set TIMECMP CSR.
+// @retval a0 : 64-bit timecmp value.
+//
+ASM_FUNC (RiscVSetTimeCmp)
+    csrw CSR_STIMECMP, a0
+    ret
