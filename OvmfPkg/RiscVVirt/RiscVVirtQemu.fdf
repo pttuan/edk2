@@ -32,8 +32,8 @@ BlockSize     = $(VARS_BLOCK_SIZE)
 NumBlocks     = $(VARS_BLOCKS)
 
 !include VarStore.fdf.inc
-################################################################################
 
+################################################################################
 [FV.DXEFV]
 BlockSize          = 0x10000
 FvAlignment        = 16
@@ -210,6 +210,10 @@ INF  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
 
 #INF  MdeModulePkg/Universal/MemoryTest/NullMemoryTestDxe/NullMemoryTestDxe.inf
 
+!if $(BUILD_STANDALONE_MM) == TRUE
+INF  UefiCpuPkg/RiscVTeeDxe/RiscVTeeDxe.inf
+!endif
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]
@@ -238,6 +242,44 @@ FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
      SECTION FV_IMAGE = DXEFV
    }
  }
+
+################################################################################
+!if $(BUILD_STANDALONE_MM) == TRUE
+[FD.RISCV_MM_VIRT]
+BaseAddress   = $(STANDALONE_MM_FW_BASE)
+Size          = $(STANDALONE_MM_FW_SIZE)
+ErasePolarity = 1
+BlockSize     = $(BLOCK_SIZE)
+NumBlocks     = $(STANDALONE_MM_FW_BLOCKS)
+
+0x00000000|$(STANDALONE_MM_FW_SIZE)
+gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvBase|gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvSize
+FV = FVMAIN_MM
+
+################################################################################
+[FV.FVMAIN_MM]
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+INF StandaloneMmPkg/Core/StandaloneMmCore.inf
+INF StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+
+################################################################################
+!endif
 
 [Rule.Common.SEC]
   FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED {
@@ -318,4 +360,17 @@ FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
   FILE FREEFORM = $(NAMED_GUID) {
     RAW ACPI               |.acpi
     RAW ASL                |.aml
+  }
+
+[Rule.Common.MM_CORE_STANDALONE]
+  FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED FIXED {
+    PE32  PE32 Align = Auto             $(INF_OUTPUT)/$(MODULE_NAME).efi
+  }
+
+[Rule.Common.MM_STANDALONE]
+  FILE MM_STANDALONE = $(NAMED_GUID) {
+    SMM_DEPEX SMM_DEPEX Optional       $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32      PE32                     $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI        STRING="$(MODULE_NAME)" Optional
+    VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
   }

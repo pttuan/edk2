@@ -22,6 +22,7 @@
   SUPPORTED_ARCHITECTURES        = RISCV64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
+  BUILD_STANDALONE_MM            = FALSE
   FLASH_DEFINITION               = OvmfPkg/RiscVVirt/RiscVVirtQemu.fdf
 
   #
@@ -60,6 +61,14 @@
 !endif
 
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
+  GCC:  *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
+  MSFT: *_*_*_DLINK_FLAGS = /ALIGN:4096
+
+[BuildOptions.common.EDKII.MM_STANDALONE]
+  GCC:  *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
+  MSFT: *_*_*_DLINK_FLAGS = /ALIGN:4096
+
+[BuildOptions.common.EDKII.MM_CORE_STANDALONE]
   GCC:  *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
   MSFT: *_*_*_DLINK_FLAGS = /ALIGN:4096
 
@@ -187,6 +196,13 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
+
+!if $(BUILD_STANDALONE_MM) == TRUE
+  #
+  # StandaloneMmPkg
+  #
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmMemSize|0x10000000
+!endif
 
 [PcdsDynamicDefault.common]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|3
@@ -504,3 +520,9 @@
     <LibraryClasses>
       NULL|OvmfPkg/Fdt/FdtPciPcdProducerLib/FdtPciPcdProducerLib.inf
   }
+
+!if $(BUILD_STANDALONE_MM) == TRUE
+  StandaloneMmPkg/Core/StandaloneMmCore.inf
+  StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+  UefiCpuPkg/RiscVTeeDxe/RiscVTeeDxe.inf
+!endif
