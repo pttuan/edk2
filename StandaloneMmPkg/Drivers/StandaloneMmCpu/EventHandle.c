@@ -11,8 +11,6 @@
 #include <Base.h>
 #include <Pi/PiMmCis.h>
 
-#include <Library/ArmSvcLib.h>
-#include <Library/ArmLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
@@ -108,7 +106,7 @@ CheckBufferAddr (
 }
 
 /**
-  The PI Standalone MM entry point for the TF-A CPU driver.
+  The PI Standalone MM entry point for the CPU driver.
 
   @param  [in] EventId            The event Id.
   @param  [in] CpuNumber          The CPU number.
@@ -121,7 +119,7 @@ CheckBufferAddr (
   @retval   EFI_UNSUPPORTED         Operation not supported.
 **/
 EFI_STATUS
-PiMmStandaloneArmTfCpuDriverEntry (
+PiMmStandaloneMmCpuDriverEntry (
   IN UINTN  EventId,
   IN UINTN  CpuNumber,
   IN UINTN  NsCommBufferAddr
@@ -135,17 +133,6 @@ PiMmStandaloneArmTfCpuDriverEntry (
   DEBUG ((DEBUG_INFO, "Received event - 0x%x on cpu %d\n", EventId, CpuNumber));
 
   Status = EFI_SUCCESS;
-  //
-  // ARM TF passes SMC FID of the MM_COMMUNICATE interface as the Event ID upon
-  // receipt of a synchronous MM request. Use the Event ID to distinguish
-  // between synchronous and asynchronous events.
-  //
-  if ((ARM_SMC_ID_MM_COMMUNICATE != EventId) &&
-      (ARM_SVC_ID_FFA_MSG_SEND_DIRECT_REQ != EventId))
-  {
-    DEBUG ((DEBUG_ERROR, "UnRecognized Event - 0x%x\n", EventId));
-    return EFI_INVALID_PARAMETER;
-  }
 
   // Perform parameter validation of NsCommBufferAddr
   if (NsCommBufferAddr == (UINTN)NULL) {
@@ -176,8 +163,6 @@ PiMmStandaloneArmTfCpuDriverEntry (
     return EFI_OUT_OF_RESOURCES;
   }
 
-  // X1 contains the VA of the normal world memory accessible from
-  // S-EL0
   CopyMem (GuidedEventContext, (CONST VOID *)NsCommBufferAddr, NsCommBufferSize);
 
   // Stash the pointer to the allocated Event Context for this CPU

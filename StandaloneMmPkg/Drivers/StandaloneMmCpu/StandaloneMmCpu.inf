@@ -19,7 +19,6 @@
 
 [Sources]
   StandaloneMmCpu.c
-  StandaloneMmCpu.h
   EventHandle.c
 
 [Packages]
@@ -29,12 +28,14 @@
   StandaloneMmPkg/StandaloneMmPkg.dec
 
 [LibraryClasses]
-  ArmLib
-  ArmSvcLib
   BaseMemoryLib
   DebugLib
   HobLib
   StandaloneMmDriverEntryPoint
+
+[LibraryClasses.AARCH64]
+  ArmLib
+  ArmSvcLib
 
 [Protocols]
   gEfiMmConfigurationProtocolGuid                        # PROTOCOL ALWAYS_PRODUCED
@@ -46,7 +47,7 @@
   gZeroGuid
   gMpInformationHobGuid
   gEfiStandaloneMmNonSecureBufferGuid
-  gEfiArmTfCpuDriverEpDescriptorGuid
+  gEfiMmCpuDriverEpDescriptorGuid
 
 [Depex]
   TRUE
