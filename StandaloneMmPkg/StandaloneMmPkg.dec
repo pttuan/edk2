@@ -48,3 +48,13 @@
   gEfiStandaloneMmNonSecureBufferGuid      = { 0xf00497e3, 0xbfa2, 0x41a1, { 0x9d, 0x29, 0x54, 0xc2, 0xe9, 0x37, 0x21, 0xc5 }}
   gEfiMmCpuDriverEpDescriptorGuid          = { 0x6ecbd5a1, 0xc0f8, 0x4702, { 0x83, 0x01, 0x4f, 0xc2, 0xc5, 0x47, 0x0a, 0x51 }}
 
+[PcdsFixedAtBuild]
+  # The RiscV Standalone MM FV offset and size
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvBase|0|UINT64|0x0
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFvSize|0|UINT32|0x1
+
+  # The location of Standalone MM FD that will be copied to confidential memory
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmFdBase|0|UINT64|0x2
+
+  # The size reserved for Standalone MM, 4K aligned
+  gStandaloneMmPkgTokenSpaceGuid.PcdRiscVStandaloneMmMemSize|0|UINT64|0x3
