@@ -20,7 +20,7 @@
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x00010011
   OUTPUT_DIRECTORY               = Build/StandaloneMm
-  SUPPORTED_ARCHITECTURES        = AARCH64|X64|ARM
+  SUPPORTED_ARCHITECTURES        = AARCH64|X64|ARM|RISCV64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
 
@@ -142,3 +142,6 @@ GCC:*_*_*_CC_FLAGS = -fno-stack-protector
 [BuildOptions.X64]
   MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096
   GCC:*_GCC*_*_DLINK_FLAGS = -z common-page-size=0x1000
+
+[BuildOptions.RISV64]
+  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000

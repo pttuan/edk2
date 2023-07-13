@@ -40,6 +40,9 @@
 [Sources.AARCH64, Sources.ARM]
   ArmStandaloneMmMemLibInternal.c
 
+[Sources.RISCV64]
+  RiscVStandaloneMmMemLibInternal.c
+
 [Packages]
   MdePkg/MdePkg.dec
   StandaloneMmPkg/StandaloneMmPkg.dec

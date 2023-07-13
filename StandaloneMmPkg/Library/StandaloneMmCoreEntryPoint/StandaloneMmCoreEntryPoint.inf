@@ -29,6 +29,11 @@
 [Sources.X64]
   X64/StandaloneMmCoreEntryPoint.c
 
+[Sources.RISCV64]
+  RiscV/CreateHobList.c
+  RiscV/EntryPoint.S
+  RiscV/StandaloneMmCoreEntryPoint.c
+
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
@@ -40,10 +45,15 @@
 [LibraryClasses]
   BaseLib
   DebugLib
+  CpuLib
 
 [LibraryClasses.ARM, LibraryClasses.AARCH64]
   StandaloneMmMmuLib
   ArmSvcLib
+
+[LibraryClasses.RISCV64]
+  RiscVSbiLib
+  RiscVTeeLib
 
 [Guids]
   gMpInformationHobGuid
@@ -63,3 +73,4 @@
 [BuildOptions]
   GCC:*_*_ARM_CC_FLAGS = -fpie
   GCC:*_*_AARCH64_CC_FLAGS = -fpie
+  GCC:*_*_RISCV64_CC_FLAGS = -fpie
