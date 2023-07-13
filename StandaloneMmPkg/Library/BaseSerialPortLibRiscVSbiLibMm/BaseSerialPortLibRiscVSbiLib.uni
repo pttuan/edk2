@@ -1,0 +1,17 @@
+// /** @file
+// Serial Port Library backed by SBI console.
+//
+// Serial Port Library backed by SBI console.
+//
+// Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+// Copyright (c) 2023,Ventana Micro Systems Inc. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+
+#string STR_MODULE_ABSTRACT             #language en-US "Serial Port Library backed by SBI console for MM environment."
+
+#string STR_MODULE_DESCRIPTION          #language en-US "Serial Port Library backed by SBI console for MM environment."
+
